@@ -38,13 +38,13 @@ namespace Vending.Api.Controllers
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, product);
+            return CreatedAtAction(nameof(GetProduct), new { id = product.ProductId }, product);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProduct(int id, Product product)
+        public async Task<IActionResult> UpdateProduct(string id, Product product)
         {
-            if (id != product.Id)
+            if (id != product.ProductId)
                 return BadRequest();
 
             _context.Entry(product).State = EntityState.Modified;
@@ -55,7 +55,7 @@ namespace Vending.Api.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!_context.Products.Any(e => e.Id == id))
+                if (!_context.Products.Any(e => e.ProductId == id))
                     return NotFound();
                 else
                     throw;

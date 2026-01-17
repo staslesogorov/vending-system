@@ -40,19 +40,19 @@ namespace Vending.Api.Controllers
             if (await _context.VendingMachines.AnyAsync(m => m.SerialNumber == machine.SerialNumber))
                 return BadRequest("ТА с таким серийным номером уже существует");
 
-            if (await _context.VendingMachines.AnyAsync(m => m.InventoryNumber == machine.InventoryNumber))
+            if (await _context.VendingMachines.AnyAsync(m => m.InventoryId == machine.InventoryId))
                 return BadRequest("ТА с таким инвентарным номером уже существует");
 
             _context.VendingMachines.Add(machine);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetVendingMachine), new { id = machine.Id }, machine);
+            return CreatedAtAction(nameof(GetVendingMachine), new { id = machine.InventoryId }, machine);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateVendingMachine(int id, VendingMachine machine)
+        public async Task<IActionResult> UpdateVendingMachine(string id, VendingMachine machine)
         {
-            if (id != machine.Id)
+            if (id != machine.InventoryId)
             {
                 return BadRequest();
             }
@@ -65,7 +65,7 @@ namespace Vending.Api.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!_context.VendingMachines.Any(e => e.Id == id))
+                if (!_context.VendingMachines.Any(e => e.InventoryId == id))
                 {
                     return NotFound();
                 }
@@ -80,7 +80,7 @@ namespace Vending.Api.Controllers
 
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteVendingMachine(int id)
+        public async Task<IActionResult> DeleteVendingMachine(string id)
         {
             var machine = await _context.VendingMachines.FindAsync(id);
             if (machine == null)

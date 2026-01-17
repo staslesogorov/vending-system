@@ -34,9 +34,8 @@ namespace Vending.Api.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Maintainer")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("MaintainerId")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("MaintenanceDate")
                         .HasColumnType("timestamp with time zone");
@@ -46,21 +45,21 @@ namespace Vending.Api.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("VendingMachineId")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MaintainerId");
+
+                    b.HasIndex("VendingMachineId");
 
                     b.ToTable("MaintenanceRecords");
                 });
 
             modelBuilder.Entity("Product", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<string>("ProductId")
+                        .HasColumnType("text");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -76,10 +75,6 @@ namespace Vending.Api.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
-                    b.Property<string>("ProductId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("SalesTendency")
                         .IsRequired()
                         .HasColumnType("text");
@@ -87,7 +82,7 @@ namespace Vending.Api.Migrations
                     b.Property<int>("StockQuantity")
                         .HasColumnType("integer");
 
-                    b.HasKey("Id");
+                    b.HasKey("ProductId");
 
                     b.ToTable("Products");
                 });
@@ -118,10 +113,13 @@ namespace Vending.Api.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("VendingMachineId")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("VendingMachineId");
 
                     b.ToTable("Sales");
                 });
@@ -156,11 +154,8 @@ namespace Vending.Api.Migrations
 
             modelBuilder.Entity("VendingMachine", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<string>("InventoryId")
+                        .HasColumnType("text");
 
                     b.Property<int>("CalibrationIntervalMonths")
                         .HasColumnType("integer");
@@ -171,11 +166,7 @@ namespace Vending.Api.Migrations
                     b.Property<DateTime>("InventoryDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("InventoryNumber")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("LastCalibrationBy")
+                    b.Property<string>("LastCalibration")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -224,9 +215,43 @@ namespace Vending.Api.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.HasKey("InventoryId");
 
                     b.ToTable("VendingMachines");
+                });
+
+            modelBuilder.Entity("MaintenanceRecord", b =>
+                {
+                    b.HasOne("User", "Maintainer")
+                        .WithMany()
+                        .HasForeignKey("MaintainerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("VendingMachine", "VendingMachine")
+                        .WithMany()
+                        .HasForeignKey("VendingMachineId");
+
+                    b.Navigation("Maintainer");
+
+                    b.Navigation("VendingMachine");
+                });
+
+            modelBuilder.Entity("Sale", b =>
+                {
+                    b.HasOne("Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("VendingMachine", "VendingMachine")
+                        .WithMany()
+                        .HasForeignKey("VendingMachineId");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("VendingMachine");
                 });
 #pragma warning restore 612, 618
         }
