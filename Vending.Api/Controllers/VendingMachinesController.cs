@@ -15,14 +15,12 @@ namespace Vending.Api.Controllers
             _context = context;
         }
 
-        // GET: api/VendingMachines
         [HttpGet]
         public async Task<ActionResult<IEnumerable<VendingMachine>>> GetVendingMachines()
         {
             return await _context.VendingMachines.ToListAsync();
         }
 
-        // GET: api/VendingMachines/5
         [HttpGet("{id}")]
         public async Task<ActionResult<VendingMachine>> GetVendingMachine(int id)
         {
@@ -36,11 +34,9 @@ namespace Vending.Api.Controllers
             return machine;
         }
 
-        // POST: api/VendingMachines
         [HttpPost]
         public async Task<ActionResult<VendingMachine>> CreateVendingMachine(VendingMachine machine)
         {
-            // Проверка уникальности серийного и инвентарного номера
             if (await _context.VendingMachines.AnyAsync(m => m.SerialNumber == machine.SerialNumber))
                 return BadRequest("ТА с таким серийным номером уже существует");
 
@@ -53,7 +49,6 @@ namespace Vending.Api.Controllers
             return CreatedAtAction(nameof(GetVendingMachine), new { id = machine.Id }, machine);
         }
 
-        // PUT: api/VendingMachines/5
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateVendingMachine(int id, VendingMachine machine)
         {
@@ -83,7 +78,7 @@ namespace Vending.Api.Controllers
             return NoContent();
         }
 
-        // DELETE: api/VendingMachines/5
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteVendingMachine(int id)
         {

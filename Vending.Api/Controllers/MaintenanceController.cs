@@ -15,21 +15,17 @@ namespace Vending.Api.Controllers
             _context = context;
         }
 
-        // GET: api/Maintenance
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MaintenanceRecord>>> GetMaintenanceRecords()
         {
             return await _context.MaintenanceRecords
-                .Include(m => m.VendingMachine)
                 .ToListAsync();
         }
 
-        // GET: api/Maintenance/5
         [HttpGet("{id}")]
         public async Task<ActionResult<MaintenanceRecord>> GetMaintenanceRecord(int id)
         {
             var record = await _context.MaintenanceRecords
-                .Include(m => m.VendingMachine)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (record == null)
@@ -38,11 +34,10 @@ namespace Vending.Api.Controllers
             return record;
         }
 
-        // POST: api/Maintenance
         [HttpPost]
         public async Task<ActionResult<MaintenanceRecord>> CreateMaintenance(MaintenanceRecord record)
         {
-            if (!_context.VendingMachines.Any(vm => vm.Id == record.VendingMachineId))
+            if (!_context.VendingMachines.Any(vm => vm.SerialNumber == record.VendingMachineId))
                 return BadRequest("Аппарат не найден");
 
             _context.MaintenanceRecords.Add(record);
@@ -51,7 +46,6 @@ namespace Vending.Api.Controllers
             return CreatedAtAction(nameof(GetMaintenanceRecord), new { id = record.Id }, record);
         }
 
-        // PUT: api/Maintenance/5
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateMaintenance(int id, MaintenanceRecord record)
         {
@@ -75,7 +69,6 @@ namespace Vending.Api.Controllers
             return NoContent();
         }
 
-        // DELETE: api/Maintenance/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMaintenance(int id)
         {

@@ -15,23 +15,19 @@ namespace Vending.Api.Controllers
             _context = context;
         }
 
-        // GET: api/Sales
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Sale>>> GetSales()
         {
             return await _context.Sales
-                .Include(s => s.VendingMachine)
-                .Include(s => s.Product)
                 .ToListAsync();
         }
 
-        // GET: api/Sales/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Sale>> GetSale(int id)
         {
             var sale = await _context.Sales
-                .Include(s => s.VendingMachine)
-                .Include(s => s.Product)
+                .Include(s => s.VendingMachineId)
+                .Include(s => s.ProductId)
                 .FirstOrDefaultAsync(s => s.Id == id);
 
             if (sale == null)
@@ -40,15 +36,13 @@ namespace Vending.Api.Controllers
             return sale;
         }
 
-        // POST: api/Sales
         [HttpPost]
         public async Task<ActionResult<Sale>> CreateSale(Sale sale)
         {
-            // Проверка существования аппарата и товара
-            if (!_context.VendingMachines.Any(vm => vm.Id == sale.VendingMachineId))
+            if (!_context.VendingMachines.Any(vm => vm.SerialNumber == sale.VendingMachineId))
                 return BadRequest("Аппарат не найден");
 
-            if (!_context.Products.Any(p => p.Id == sale.ProductId))
+            if (!_context.Products.Any(p => p.ProductId == sale.ProductId))
                 return BadRequest("Товар не найден");
 
             _context.Sales.Add(sale);
@@ -57,7 +51,6 @@ namespace Vending.Api.Controllers
             return CreatedAtAction(nameof(GetSale), new { id = sale.Id }, sale);
         }
 
-        // PUT: api/Sales/5
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateSale(int id, Sale sale)
         {
@@ -81,7 +74,6 @@ namespace Vending.Api.Controllers
             return NoContent();
         }
 
-        // DELETE: api/Sales/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSale(int id)
         {

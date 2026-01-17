@@ -12,7 +12,7 @@ using Vending.Api.Data;
 namespace Vending.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260114145213_InitialCreate")]
+    [Migration("20260117163341_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -25,7 +25,7 @@ namespace Vending.Api.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Vending.Api.Models.Maintenance", b =>
+            modelBuilder.Entity("MaintenanceRecord", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -37,33 +37,27 @@ namespace Vending.Api.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("ExecutorId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("ExecutorName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Issues")
+                    b.Property<string>("Maintainer")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("MaintenanceDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("VendingMachineId")
-                        .HasColumnType("integer");
+                    b.Property<string>("Problems")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("VendingMachineId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ExecutorId");
-
-                    b.HasIndex("VendingMachineId");
-
-                    b.ToTable("Maintenances");
+                    b.ToTable("MaintenanceRecords");
                 });
 
-            modelBuilder.Entity("Vending.Api.Models.Product", b =>
+            modelBuilder.Entity("Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -75,20 +69,25 @@ namespace Vending.Api.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("MinStock")
+                    b.Property<int>("MinimumStockLevel")
                         .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<decimal?>("Popularity")
-                        .HasColumnType("numeric");
-
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
-                    b.Property<int>("Quantity")
+                    b.Property<string>("ProductId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("SalesTendency")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("StockQuantity")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -96,7 +95,7 @@ namespace Vending.Api.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("Vending.Api.Models.Sale", b =>
+            modelBuilder.Entity("Sale", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -104,35 +103,33 @@ namespace Vending.Api.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("PaymentMethod")
+                    b.Property<string>("PaymentMethodSale")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("integer");
+                    b.Property<string>("ProductId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
 
+                    b.Property<decimal>("SaleAmount")
+                        .HasColumnType("numeric");
+
                     b.Property<DateTime>("SaleDateTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("numeric");
-
-                    b.Property<int>("VendingMachineId")
-                        .HasColumnType("integer");
+                    b.Property<string>("VendingMachineId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("VendingMachineId");
 
                     b.ToTable("Sales");
                 });
 
-            modelBuilder.Entity("Vending.Api.Models.User", b =>
+            modelBuilder.Entity("User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -144,16 +141,11 @@ namespace Vending.Api.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PasswordHash")
+                    b.Property<string>("FIO")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Phone")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Role")
@@ -165,7 +157,7 @@ namespace Vending.Api.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Vending.Api.Models.VendingMachine", b =>
+            modelBuilder.Entity("VendingMachine", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -173,30 +165,32 @@ namespace Vending.Api.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("CheckIntervalMonths")
+                    b.Property<int>("CalibrationIntervalMonths")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<DateTime>("CommissioningDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("InventoryDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("InventoryNumber")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("LastCheckDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("LastCheckEmployee")
+                    b.Property<string>("LastCalibrationBy")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("LastInventoryDate")
+                    b.Property<DateTime>("LastCalibrationDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Location")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int>("MaintenanceDurationHours")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("ManufactureDate")
                         .HasColumnType("timestamp with time zone");
@@ -209,27 +203,24 @@ namespace Vending.Api.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("NextServiceDate")
+                    b.Property<DateTime>("NextMaintenanceDate")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ProductionCountry")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("ResourceHours")
                         .HasColumnType("integer");
 
                     b.Property<string>("SerialNumber")
-                        .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<int>("ServiceHours")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("ServiceStartDate")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<decimal>("TotalIncome")
+                    b.Property<decimal>("TotalRevenue")
                         .HasColumnType("numeric");
 
                     b.Property<string>("Type")
@@ -239,42 +230,6 @@ namespace Vending.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("VendingMachines");
-                });
-
-            modelBuilder.Entity("Vending.Api.Models.Maintenance", b =>
-                {
-                    b.HasOne("Vending.Api.Models.User", "Executor")
-                        .WithMany()
-                        .HasForeignKey("ExecutorId");
-
-                    b.HasOne("Vending.Api.Models.VendingMachine", "VendingMachine")
-                        .WithMany()
-                        .HasForeignKey("VendingMachineId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Executor");
-
-                    b.Navigation("VendingMachine");
-                });
-
-            modelBuilder.Entity("Vending.Api.Models.Sale", b =>
-                {
-                    b.HasOne("Vending.Api.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Vending.Api.Models.VendingMachine", "VendingMachine")
-                        .WithMany()
-                        .HasForeignKey("VendingMachineId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("VendingMachine");
                 });
 #pragma warning restore 612, 618
         }
