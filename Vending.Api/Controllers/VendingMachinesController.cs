@@ -6,14 +6,9 @@ namespace Vending.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class VendingMachinesController : ControllerBase
+public class VendingMachinesController(AppDbContext context) : ControllerBase
 {
-    private readonly AppDbContext _context;
-
-    public VendingMachinesController(AppDbContext context)
-    {
-        _context = context;
-    }
+    private readonly AppDbContext _context = context;
 
     [HttpGet]
     public ActionResult<IEnumerable<VendingMachine>> GetVendingMachines()

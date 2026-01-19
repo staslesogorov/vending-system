@@ -6,14 +6,9 @@ namespace Vending.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class MaintenanceController : ControllerBase
+public class MaintenanceController(AppDbContext context) : ControllerBase
 {
-    private readonly AppDbContext _context;
-
-    public MaintenanceController(AppDbContext context)
-    {
-        _context = context;
-    }
+    private readonly AppDbContext _context = context;
 
     [HttpGet]
     public ActionResult<IEnumerable<MaintenanceRecord>> GetMaintenanceRecords()
