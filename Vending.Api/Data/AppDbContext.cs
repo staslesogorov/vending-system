@@ -67,7 +67,7 @@ public class AppDbContext : DbContext
 
                 t.HasCheckConstraint(
                     "check_next_maintenance_date",
-                    "\"NextMaintenanceDate\" > CURRENT_DATE"
+                    "\"NextMaintenanceDate\" > \"ManufactureDate\""
                 );
             });
         });
