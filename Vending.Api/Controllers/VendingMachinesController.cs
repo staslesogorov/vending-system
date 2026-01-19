@@ -2,96 +2,94 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Vending.Api.Data;
 
-namespace Vending.Api.Controllers
+namespace Vending.Api.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class VendingMachinesController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class VendingMachinesController : ControllerBase
+    private readonly AppDbContext _context;
+
+    public VendingMachinesController(AppDbContext context)
     {
-        private readonly AppDbContext _context;
+        _context = context;
+    }
 
-        public VendingMachinesController(AppDbContext context)
+    [HttpGet]
+    public ActionResult<IEnumerable<VendingMachine>> GetVendingMachines()
+    {
+        return _context.VendingMachines.ToList();
+    }
+
+    [HttpGet("{id}")]
+    public ActionResult<VendingMachine> GetVendingMachine(int id)
+    {
+        var machine = _context.VendingMachines.FirstOrDefault(m => m.Id == id);
+
+        if (machine == null)
         {
-            _context = context;
+            return NotFound();
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<VendingMachine>>> GetVendingMachines()
+        return machine;
+    }
+
+    [HttpPost]
+    public ActionResult<VendingMachine> CreateVendingMachine(VendingMachine machine)
+    {
+        if (_context.VendingMachines.Any(m => m.SerialNumber == machine.SerialNumber))
+            return BadRequest("ТА с таким серийным номером уже существует");
+
+        if (_context.VendingMachines.Any(m => m.Id == machine.Id))
+            return BadRequest("ТА с таким инвентарным номером уже существует");
+
+        _context.VendingMachines.Add(machine);
+        _context.SaveChanges();
+
+        return CreatedAtAction(nameof(GetVendingMachine), new { id = machine.Id }, machine);
+    }
+
+    [HttpPut("{id}")]
+    public IActionResult UpdateVendingMachine(int id, VendingMachine machine)
+    {
+        if (id != machine.Id)
         {
-            return await _context.VendingMachines.ToListAsync();
+            return BadRequest();
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<VendingMachine>> GetVendingMachine(int id)
-        {
-            var machine = await _context.VendingMachines.FindAsync(id);
+        _context.Entry(machine).State = EntityState.Modified;
 
-            if (machine == null)
+        try
+        {
+            _context.SaveChanges();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!_context.VendingMachines.Any(e => e.Id == id))
             {
                 return NotFound();
             }
-
-            return machine;
+            else
+            {
+                throw;
+            }
         }
 
-        [HttpPost]
-        public async Task<ActionResult<VendingMachine>> CreateVendingMachine(VendingMachine machine)
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    public IActionResult DeleteVendingMachine(int id)
+    {
+        var machine = _context.VendingMachines.FirstOrDefault(m => m.Id == id);
+        if (machine == null)
         {
-            if (await _context.VendingMachines.AnyAsync(m => m.SerialNumber == machine.SerialNumber))
-                return BadRequest("ТА с таким серийным номером уже существует");
-
-            if (await _context.VendingMachines.AnyAsync(m => m.InventoryId == machine.InventoryId))
-                return BadRequest("ТА с таким инвентарным номером уже существует");
-
-            _context.VendingMachines.Add(machine);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetVendingMachine), new { id = machine.InventoryId }, machine);
+            return NotFound();
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateVendingMachine(string id, VendingMachine machine)
-        {
-            if (id != machine.InventoryId)
-            {
-                return BadRequest();
-            }
+        _context.VendingMachines.Remove(machine);
+        _context.SaveChanges();
 
-            _context.Entry(machine).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!_context.VendingMachines.Any(e => e.InventoryId == id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteVendingMachine(string id)
-        {
-            var machine = await _context.VendingMachines.FindAsync(id);
-            if (machine == null)
-            {
-                return NotFound();
-            }
-
-            _context.VendingMachines.Remove(machine);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
+        return NoContent();
     }
 }

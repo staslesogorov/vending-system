@@ -2,89 +2,86 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Vending.Api.Data;
 
-namespace Vending.Api.Controllers
+namespace Vending.Api.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class SalesController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class SalesController : ControllerBase
+    private readonly AppDbContext _context;
+
+    public SalesController(AppDbContext context)
     {
-        private readonly AppDbContext _context;
+        _context = context;
+    }
 
-        public SalesController(AppDbContext context)
+    [HttpGet]
+    public ActionResult<IEnumerable<Sale>> GetSales()
+    {
+        return _context.Sales.ToList();
+    }
+
+    [HttpGet("{id}")]
+    public ActionResult<Sale> GetSale(int id)
+    {
+        var sale = _context
+            .Sales.Include(s => s.VendingMachineId)
+            .Include(s => s.ProductId)
+            .FirstOrDefault(s => s.Id == id);
+
+        if (sale == null)
+            return NotFound();
+
+        return sale;
+    }
+
+    [HttpPost]
+    public ActionResult<Sale> CreateSale(Sale sale)
+    {
+        if (!_context.VendingMachines.Any(vm => vm.Id == sale.VendingMachineId))
+            return BadRequest("Аппарат не найден");
+
+        if (!_context.Products.Any(p => p.Id == sale.ProductId))
+            return BadRequest("Товар не найден");
+
+        _context.Sales.Add(sale);
+        _context.SaveChanges();
+        return CreatedAtAction(nameof(GetSale), new { id = sale.Id }, sale);
+    }
+
+    [HttpPut("{id}")]
+    public IActionResult UpdateSale(int id, Sale sale)
+    {
+        if (id != sale.Id)
+            return BadRequest();
+
+        _context.Entry(sale).State = EntityState.Modified;
+
+        try
         {
-            _context = context;
+            _context.SaveChanges();
         }
-
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Sale>>> GetSales()
+        catch (DbUpdateConcurrencyException)
         {
-            return await _context.Sales
-                .ToListAsync();
-        }
-
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Sale>> GetSale(int id)
-        {
-            var sale = await _context.Sales
-                .Include(s => s.VendingMachineId)
-                .Include(s => s.ProductId)
-                .FirstOrDefaultAsync(s => s.Id == id);
-
-            if (sale == null)
+            if (!_context.Sales.Any(e => e.Id == id))
                 return NotFound();
-
-            return sale;
+            else
+                throw;
         }
 
-        [HttpPost]
-        public async Task<ActionResult<Sale>> CreateSale(Sale sale)
-        {
-            if (!_context.VendingMachines.Any(vm => vm.SerialNumber == sale.VendingMachineId))
-                return BadRequest("Аппарат не найден");
+        return NoContent();
+    }
 
-            if (!_context.Products.Any(p => p.ProductId == sale.ProductId))
-                return BadRequest("Товар не найден");
+    [HttpDelete("{id}")]
+    public IActionResult DeleteSale(int id)
+    {
+        var sale = _context.Sales.FirstOrDefault(s => s.Id == id);
+        if (sale == null)
+            return NotFound();
 
-            _context.Sales.Add(sale);
-            await _context.SaveChangesAsync();
+        _context.Sales.Remove(sale);
+        _context.SaveChanges();
 
-            return CreatedAtAction(nameof(GetSale), new { id = sale.Id }, sale);
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSale(int id, Sale sale)
-        {
-            if (id != sale.Id)
-                return BadRequest();
-
-            _context.Entry(sale).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!_context.Sales.Any(e => e.Id == id))
-                    return NotFound();
-                else
-                    throw;
-            }
-
-            return NoContent();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteSale(int id)
-        {
-            var sale = await _context.Sales.FindAsync(id);
-            if (sale == null)
-                return NotFound();
-
-            _context.Sales.Remove(sale);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
+        return NoContent();
     }
 }

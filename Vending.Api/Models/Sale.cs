@@ -1,19 +1,22 @@
-using System;
-using System.ComponentModel.DataAnnotations;
-
 public class Sale
 {
     public int Id { get; set; }
 
-    public string? VendingMachineId { get; set; }
+    public int VendingMachineId { get; set; }
     public VendingMachine? VendingMachine { get; set; }
 
-    public string ProductId { get; set; }
-    public Product Product { get; set; }
+    public int ProductId { get; set; }
+    public Product? Product { get; set; }
 
     public int Quantity { get; set; }
     public decimal SaleAmount { get; set; }
     public DateTime SaleDateTime { get; set; }
-    public string PaymentMethodSale { get; set; }
+    public Payment PaymentMethodSale { get; set; } = Payment.Cash;
+}
 
+public enum Payment
+{
+    Card = 0,
+    Cash = 1,
+    QrCode = 2,
 }

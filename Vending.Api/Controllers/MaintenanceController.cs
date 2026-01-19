@@ -2,84 +2,81 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Vending.Api.Data;
 
-namespace Vending.Api.Controllers
+namespace Vending.Api.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class MaintenanceController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class MaintenanceController : ControllerBase
+    private readonly AppDbContext _context;
+
+    public MaintenanceController(AppDbContext context)
     {
-        private readonly AppDbContext _context;
+        _context = context;
+    }
 
-        public MaintenanceController(AppDbContext context)
+    [HttpGet]
+    public ActionResult<IEnumerable<MaintenanceRecord>> GetMaintenanceRecords()
+    {
+        return _context.MaintenanceRecords.ToList();
+    }
+
+    [HttpGet("{id}")]
+    public ActionResult<MaintenanceRecord> GetMaintenanceRecord(int id)
+    {
+        var record = _context.MaintenanceRecords.FirstOrDefault(m => m.Id == id);
+
+        if (record == null)
+            return NotFound();
+
+        return record;
+    }
+
+    [HttpPost]
+    public ActionResult<MaintenanceRecord> CreateMaintenance(MaintenanceRecord record)
+    {
+        if (!_context.VendingMachines.Any(vm => vm.Id == record.VendingMachineId))
+            return BadRequest("Аппарат не найден");
+
+        _context.MaintenanceRecords.Add(record);
+        _context.SaveChanges();
+
+        return CreatedAtAction(nameof(GetMaintenanceRecord), new { id = record.Id }, record);
+    }
+
+    [HttpPut("{id}")]
+    public IActionResult UpdateMaintenance(int id, MaintenanceRecord record)
+    {
+        if (id != record.Id)
+            return BadRequest();
+
+        _context.Entry(record).State = EntityState.Modified;
+
+        try
         {
-            _context = context;
+            _context.SaveChanges();
         }
-
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<MaintenanceRecord>>> GetMaintenanceRecords()
+        catch (DbUpdateConcurrencyException)
         {
-            return await _context.MaintenanceRecords
-                .ToListAsync();
-        }
-
-        [HttpGet("{id}")]
-        public async Task<ActionResult<MaintenanceRecord>> GetMaintenanceRecord(int id)
-        {
-            var record = await _context.MaintenanceRecords
-                .FirstOrDefaultAsync(m => m.Id == id);
-
-            if (record == null)
+            if (!_context.MaintenanceRecords.Any(e => e.Id == id))
                 return NotFound();
-
-            return record;
+            else
+                throw;
         }
 
-        [HttpPost]
-        public async Task<ActionResult<MaintenanceRecord>> CreateMaintenance(MaintenanceRecord record)
-        {
-            if (!_context.VendingMachines.Any(vm => vm.SerialNumber == record.VendingMachineId))
-                return BadRequest("Аппарат не найден");
+        return NoContent();
+    }
 
-            _context.MaintenanceRecords.Add(record);
-            await _context.SaveChangesAsync();
+    [HttpDelete("{id}")]
+    public IActionResult DeleteMaintenance(int id)
+    {
+        var record = _context.MaintenanceRecords.FirstOrDefault(m => m.Id == id);
+        if (record == null)
+            return NotFound();
 
-            return CreatedAtAction(nameof(GetMaintenanceRecord), new { id = record.Id }, record);
-        }
+        _context.MaintenanceRecords.Remove(record);
+        _context.SaveChanges();
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateMaintenance(int id, MaintenanceRecord record)
-        {
-            if (id != record.Id)
-                return BadRequest();
-
-            _context.Entry(record).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!_context.MaintenanceRecords.Any(e => e.Id == id))
-                    return NotFound();
-                else
-                    throw;
-            }
-
-            return NoContent();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMaintenance(int id)
-        {
-            var record = await _context.MaintenanceRecords.FindAsync(id);
-            if (record == null)
-                return NotFound();
-
-            _context.MaintenanceRecords.Remove(record);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
+        return NoContent();
     }
 }
