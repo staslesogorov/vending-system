@@ -17,7 +17,7 @@ public class VendingMachinesController(AppDbContext context) : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public ActionResult<VendingMachine> GetVendingMachine(int id)
+    public ActionResult<VendingMachine> GetVendingMachine(Guid id)
     {
         var machine = _context.VendingMachines.FirstOrDefault(m => m.Id == id);
 
@@ -45,7 +45,7 @@ public class VendingMachinesController(AppDbContext context) : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public IActionResult UpdateVendingMachine(int id, VendingMachine machine)
+    public IActionResult UpdateVendingMachine(Guid id, VendingMachine machine)
     {
         if (id != machine.Id)
         {
@@ -74,7 +74,7 @@ public class VendingMachinesController(AppDbContext context) : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public IActionResult DeleteVendingMachine(int id)
+    public IActionResult DeleteVendingMachine(Guid id)
     {
         var machine = _context.VendingMachines.FirstOrDefault(m => m.Id == id);
         if (machine == null)

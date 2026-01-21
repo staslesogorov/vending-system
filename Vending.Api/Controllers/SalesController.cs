@@ -17,7 +17,7 @@ public class SalesController(AppDbContext context) : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public ActionResult<Sale> GetSale(int id)
+    public ActionResult<Sale> GetSale(Guid id)
     {
         var sale = _context
             .Sales.Include(s => s.VendingMachineId)
@@ -45,7 +45,7 @@ public class SalesController(AppDbContext context) : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public IActionResult UpdateSale(int id, Sale sale)
+    public IActionResult UpdateSale(Guid id, Sale sale)
     {
         if (id != sale.Id)
             return BadRequest();
@@ -68,7 +68,7 @@ public class SalesController(AppDbContext context) : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public IActionResult DeleteSale(int id)
+    public IActionResult DeleteSale(Guid id)
     {
         var sale = _context.Sales.FirstOrDefault(s => s.Id == id);
         if (sale == null)

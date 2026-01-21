@@ -1,6 +1,6 @@
 public class VendingMachine
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     public string Location { get; set; } = string.Empty;
     public string Model { get; set; } = string.Empty;
     public string Type { get; set; } = string.Empty;
@@ -19,6 +19,6 @@ public class VendingMachine
     public string ProductionCountry { get; set; } = string.Empty;
     public DateTime InventoryDate { get; set; }
 
-    public int UserId { get; set; }
+    public Guid UserId { get; set; }
     public User? User { get; set; }
 }

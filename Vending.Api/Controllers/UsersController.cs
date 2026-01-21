@@ -16,7 +16,7 @@ public class UsersController(AppDbContext context) : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public ActionResult<User> GetUser(int id)
+    public ActionResult<User> GetUser(Guid id)
     {
         var user = _context.Users.FirstOrDefault(u => u.Id == id);
 
@@ -36,7 +36,7 @@ public class UsersController(AppDbContext context) : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public IActionResult UpdateUser(int id, User user)
+    public IActionResult UpdateUser(Guid id, User user)
     {
         if (id != user.Id)
             return BadRequest();
@@ -59,7 +59,7 @@ public class UsersController(AppDbContext context) : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public IActionResult DeleteUser(int id)
+    public IActionResult DeleteUser(Guid id)
     {
         var user = _context.Users.FirstOrDefault(u => u.Id == id);
         if (user == null)

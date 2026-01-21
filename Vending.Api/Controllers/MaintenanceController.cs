@@ -17,7 +17,7 @@ public class MaintenanceController(AppDbContext context) : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public ActionResult<MaintenanceRecord> GetMaintenanceRecord(int id)
+    public ActionResult<MaintenanceRecord> GetMaintenanceRecord(Guid id)
     {
         var record = _context.MaintenanceRecords.FirstOrDefault(m => m.Id == id);
 
@@ -40,7 +40,7 @@ public class MaintenanceController(AppDbContext context) : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public IActionResult UpdateMaintenance(int id, MaintenanceRecord record)
+    public IActionResult UpdateMaintenance(Guid id, MaintenanceRecord record)
     {
         if (id != record.Id)
             return BadRequest();
@@ -63,7 +63,7 @@ public class MaintenanceController(AppDbContext context) : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public IActionResult DeleteMaintenance(int id)
+    public IActionResult DeleteMaintenance(Guid id)
     {
         var record = _context.MaintenanceRecords.FirstOrDefault(m => m.Id == id);
         if (record == null)

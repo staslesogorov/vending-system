@@ -17,7 +17,7 @@ public class ProductsController(AppDbContext context) : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public ActionResult<Product> GetProduct(int id)
+    public ActionResult<Product> GetProduct(Guid id)
     {
         var product = _context.Products.FirstOrDefault(p => p.Id == id);
 
@@ -37,7 +37,7 @@ public class ProductsController(AppDbContext context) : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public IActionResult UpdateProduct(int id, Product product)
+    public IActionResult UpdateProduct(Guid id, Product product)
     {
         if (id != product.Id)
             return BadRequest();
@@ -60,7 +60,7 @@ public class ProductsController(AppDbContext context) : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public IActionResult DeleteProduct(int id)
+    public IActionResult DeleteProduct(Guid id)
     {
         var product = _context.Products.FirstOrDefault(p => p.Id == id);
         if (product == null)
