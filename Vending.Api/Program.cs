@@ -44,8 +44,6 @@ app.MapGet(
         return users;
     }
 );
-
-
 app.MapGet(
     "/parsing_products",
     async (AppDbContext db) =>
