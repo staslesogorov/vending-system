@@ -150,6 +150,14 @@ namespace Vending.Api.Migrations
                     b.Property<bool>("IsOperator")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("Login")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Phone")
                         .HasColumnType("text");
 

@@ -27,13 +27,15 @@ public class UsersController(AppDbContext context) : ControllerBase
     }
 
     [HttpPost]
-    public ActionResult<User> CreateUser(User user)
+    public async Task<ActionResult<User>> CreateUser(User user)
     {
         _context.Users.Add(user);
-        _context.SaveChanges();
+        user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+        await _context.SaveChangesAsync();
 
         return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
     }
+
 
     [HttpPut("{id}")]
     public IActionResult UpdateUser(Guid id, User user)
