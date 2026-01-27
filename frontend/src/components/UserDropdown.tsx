@@ -3,13 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import type IUser from '../interfaces/IUser';
 
 export default function UserDropdown() {
+    const [open, setOpen] = useState(false);
+    const ref = useRef<HTMLDivElement>(null);
+    const navigate = useNavigate();
     const [currentUser, setCurrentUser] = useState<IUser|null>(() => {
         const user = localStorage.getItem('user')
         return user ? JSON.parse(user) : null
     });
-    const [open, setOpen] = useState(false);
-    const ref = useRef<HTMLDivElement>(null);
-    const navigate = useNavigate();
 
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
@@ -20,6 +20,10 @@ export default function UserDropdown() {
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
+
+    useEffect(() => {
+        if (!currentUser) navigate('/login')
+    }, [])
 
     const leaveHandler = () => {
         localStorage.removeItem('user')
