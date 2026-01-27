@@ -11,7 +11,7 @@ export default function SideBar() {
   return (
     <div>
       <div className="p-4 flex justify-between text-gray-300 w-64 h-max bg-gray-900" onClick={() => setIsShort(prev => !prev)}>
-        <span>Навигация</span>
+        <span>Навигация (?)</span>
         <span className={`transition-transform duration-200 ${isShort ? '-rotate-90' : 'rotate-90'}`}>▾</span>
       </div>
 

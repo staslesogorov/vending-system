@@ -38,13 +38,15 @@ export default function UserDropdown() {
         <div className="relative" ref={ref}>
             <div className="flex items-center gap-2 cursor-pointer p-2.5 hover:bg-gray-50" onClick={() => {setOpen(!open)}}>
                 <img
-                src={currentUser ? currentUser.image : "https://flagcdn.com/w20/ru.png"}
-                alt="ru"
-                width={20}
-                height={20}
+                    src={currentUser ? currentUser.image : "https://flagcdn.com/w20/ru.png"}
+                    alt="ru"
+                    width={20}
+                    height={20}
                 />
                 <div>
-                    <div className="text-sm">{currentUser ? `${currentUser.fullName.split(" ")[0]} ${currentUser.fullName.split(" ")[1][0]}. ${currentUser.fullName.split(" ")[1][0]}.` : ""}</div>
+                    <div className="text-sm">
+                        {currentUser ? `${currentUser.fullName.split(" ")[0]} ${currentUser.fullName.split(" ")[1][0]}. ${currentUser.fullName.split(" ")[1][0]}.` : ""}
+                    </div>
                     <div className="text-gray-500 text-xs">{currentUser ? currentUser.role : ""}</div>
                 </div>
                 <span className={`transition-transform duration-200 ${open ? 'rotate-180' : ''}`}>▾</span>

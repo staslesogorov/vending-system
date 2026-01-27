@@ -29,17 +29,17 @@ export default function Home() {
                 <SectionHeader title="Личный кабинет. Главная"/>
 
                 <div className="grid grid-cols-3 gap-5">
-                    <Module title="Эффективность сети" className="col-span-1">
+                    <Module title="Эффективность сети (диаграмму?)" className="col-span-1">
                         <span> Все автоматы: {vendingMachines.length} </span>
                         <span> Работающие автоматы: {successMachines.length} </span>
                         <span> Процент: {Math.round((successMachines.length / vendingMachines.length) * 100)} % </span>
                     </Module>
-                    <Module title="Состояние сети" className="col-span-1">
+                    <Module title="Состояние сети (диаграмму)" className="col-span-1">
                         <span> Работающие автоматы: {successMachines.length} </span>
                         <span> Автоматы на ремонте/обслуживании: {serviceMachines.length} </span>
                         <span> Сломанные автоматы: {brokenMachines.length} </span>
                     </Module>
-                    <Module title="Сводка..." className="col-span-1">
+                    <Module title="Сводка (данные)" className="col-span-1">
                         <InfoItem title="Денег в ТА" value="0 р." />
                         <InfoItem title="Сдача в ТА" value="0 р." />
                         <InfoItem title="Выручка, сегодня" value="0 р." />
@@ -48,10 +48,10 @@ export default function Home() {
                         <InfoItem title="Инкасированно, вчера" value="0 р." />
                         <InfoItem title="Обслужено ТА, сег./вчера" value="0 / 0" />
                     </Module>
-                    <Module title="Динамика продаж за последние 10 дней..." className="col-span-2"> 
+                    <Module title="Динамика продаж за последние 10 дней (?)" className="col-span-2"> 
                         <></>
                     </Module>
-                    <Module title="Новости..." className="col-span-1">
+                    <Module title="Новости (с бека подгружать?)" className="col-span-1">
                         <NewsItem date="01.01.25" description="ТекстТекстТекстТекстТекстТекстТекстТекст"/>
                         <NewsItem date="01.01.25" description="ТекстТекстТекстТекстТекстТекстТекстТекст"/>
                         <NewsItem date="01.01.25" description="ТекстТекстТекстТекстТекстТекстТекстТекст"/>
