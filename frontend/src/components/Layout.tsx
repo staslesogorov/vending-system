@@ -1,9 +1,9 @@
-import Logo from "./Logo";
-import UserDropdown from "./UserDropdown";
-import Header from "./Header";
+import Logo from "./header/Logo";
+import UserDropdown from "./header/UserDropdown";
+import Header from "./header/Header";
 import { Outlet } from "react-router-dom";
 import Main from "./Main";
-import SideBar from "./SideBar";
+import SideBar from "./sidebar/SideBar";
 
 export default function Layout() {
     return (

@@ -1,6 +1,8 @@
 import {useState, useEffect, useRef} from 'react';
 import { useNavigate } from 'react-router-dom';
-import type IUser from '../interfaces/IUser';
+import type IUser from '../../interfaces/IUser';
+import { Lock, Power, User } from "lucide-react"
+import DropdownButton from './DropdownButton';
 
 export default function UserDropdown() {
     const [open, setOpen] = useState(false);
@@ -49,10 +51,19 @@ export default function UserDropdown() {
             </div>
 
             {open && (
-                <div className="absolute flex flex-col top-full right-0 w-full bg-white rounded-b-md border-t border-gray-400 shadow-lg mt-0.1 overflow-hidden z-100">
-                    <button className="px-3.5 py-2.5 text-sm cursor-pointer hover:bg-gray-50">Мой профиль</button>
-                    <button className="px-3.5 py-2.5 text-sm cursor-pointer hover:bg-gray-50">Мои сессии</button>
-                    <button className="px-3.5 py-2.5 text-sm cursor-pointer hover:bg-gray-50 text-red-500" onClick={leaveHandler}>Выход</button>
+                <div className="absolute flex flex-col top-full right-0 w-full bg-white rounded-b-md border-t border-gray-200 shadow-lg mt-0.1 overflow-hidden z-100">
+                    <DropdownButton onClick={() => {}}>
+                        <User width={20}/>
+                        <span>Мой профиль</span>
+                    </DropdownButton>
+                    <DropdownButton onClick={() => {}}>
+                        <Lock width={20}/>
+                        <span>Мои сессии</span>
+                    </DropdownButton>
+                    <DropdownButton onClick={leaveHandler} className='hover:text-red-500'>
+                        <Power width={20}/>
+                        <span>Выход</span>
+                    </DropdownButton>
                 </div>
             )}
         </div>

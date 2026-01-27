@@ -1,9 +1,9 @@
 import { ToastContainer } from "react-toastify";
 import Layout from "./components/Layout";
-import Login from "./components/Login";
+import Login from "./components/login/Login";
 import NotFound from "./components/NotFound";
 import { BrowserRouter, Route, Routes} from 'react-router-dom'
-import Home from "./components/Home"
+import Home from "./components/sections/home/Home"
 
 export default function App() {
   return (

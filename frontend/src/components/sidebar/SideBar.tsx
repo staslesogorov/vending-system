@@ -1,10 +1,12 @@
 import { useState } from "react"
 import { Search, FileText, ShoppingCart, Settings, Monitor } from 'lucide-react'
 import SidebarItem from "./SideBarItem"
+import { useNavigate } from "react-router-dom"
 
 
 export default function SideBar() {
   const [isShort, setIsShort] = useState(false)
+  const navigate = useNavigate()
 
   return (
     <div>
@@ -19,26 +21,31 @@ export default function SideBar() {
                     icon={<Search size={22} />}
                     label="Главная"
                     isShort={isShort}
+                    onClick={() => navigate('/')}
                 />
                 <SidebarItem
                     icon={<Monitor size={22} />}
                     label="Мониторинг ТА"
                     isShort={isShort}
+                    onClick={() => navigate('/monitoring')}
                 />
                 <SidebarItem
                     icon={<FileText size={22} />}
                     label="Детальные отчёты"
                     isShort={isShort}
+                    onClick={() => navigate('/reports')}
                 />
                 <SidebarItem
                     icon={<ShoppingCart size={22} />}
                     label="Учет ТМЦ"
                     isShort={isShort}
+                    onClick={() => navigate('/tmc')}
                 />
                 <SidebarItem
                     icon={<Settings size={22} />}
                     label="Администрирование"
                     isShort={isShort}
+                    onClick={() => navigate('/admin')}
                 />
         </div>
       </div>

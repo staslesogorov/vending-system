@@ -1,6 +1,6 @@
-import Header from "./Header";
+import Header from "../header/Header";
 import LoginForm from "./LoginForm";
-import Logo from "./Logo";
+import Logo from "../header/Logo";
 
 export default function Login() {
     return (
