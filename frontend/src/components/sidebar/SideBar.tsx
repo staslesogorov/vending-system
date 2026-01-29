@@ -1,12 +1,11 @@
 import { useState } from "react"
 import { Search, FileText, ShoppingCart, Settings, Monitor } from 'lucide-react'
 import SidebarItem from "./SideBarItem"
-import { useNavigate } from "react-router-dom"
+import SideBarDropdownItem from "./SideBarDropdownItem"
 
 
 export default function SideBar() {
   const [isShort, setIsShort] = useState(false)
-  const navigate = useNavigate()
 
   return (
     <div>
@@ -15,37 +14,40 @@ export default function SideBar() {
         <span className={`transition-transform duration-200 ${isShort ? '-rotate-90' : 'rotate-90'}`}>▾</span>
       </div>
 
-        <div className={`bg-gray-900 h-screen pt-3 ${isShort ? 'w-16' : 'w-64'}`} onClick={() => setIsShort(prev => !prev)}>
+        <div className={`bg-gray-900 h-screen pt-3 ${isShort ? 'w-16' : 'w-64'}`}>
             <div className="flex flex-col gap-7">
                 <SidebarItem
                     icon={<Search size={22} />}
                     label="Главная"
                     isShort={isShort}
-                    onClick={() => navigate('/')}
+                    path='/'
                 />
                 <SidebarItem
                     icon={<Monitor size={22} />}
                     label="Мониторинг ТА"
                     isShort={isShort}
-                    onClick={() => navigate('/monitoring')}
+                    path='/monitoring'
                 />
-                <SidebarItem
+                <SideBarDropdownItem
                     icon={<FileText size={22} />}
                     label="Детальные отчёты"
                     isShort={isShort}
-                    onClick={() => navigate('/reports')}
+                    items={["Детальные отчёты"]}
+                    path='/reports'
                 />
-                <SidebarItem
+                <SideBarDropdownItem
                     icon={<ShoppingCart size={22} />}
                     label="Учет ТМЦ"
                     isShort={isShort}
-                    onClick={() => navigate('/tmc')}
+                    items={["Учет ТМЦ"]}
+                    path='/tmc'
                 />
-                <SidebarItem
+                <SideBarDropdownItem
                     icon={<Settings size={22} />}
                     label="Администрирование"
                     isShort={isShort}
-                    onClick={() => navigate('/admin')}
+                    items={["Торговые автоматы", "Компании", "Пользователи", "Модемы", "Дополнительные"]}
+                    path="/admin"
                 />
         </div>
       </div>

@@ -54,7 +54,7 @@ export default function UserDropdown() {
 
             {open && (
                 <div className="absolute flex flex-col top-full right-0 w-full bg-white rounded-b-md border-t border-gray-200 shadow-lg mt-0.1 overflow-hidden z-100">
-                    <DropdownButton onClick={() => {}}>
+                    <DropdownButton onClick={() => {navigate('/')}}>
                         <User width={20}/>
                         <span>Мой профиль</span>
                     </DropdownButton>

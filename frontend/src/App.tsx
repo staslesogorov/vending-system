@@ -4,6 +4,8 @@ import Login from "./components/login/Login";
 import NotFound from "./components/NotFound";
 import { BrowserRouter, Route, Routes} from 'react-router-dom'
 import Home from "./components/sections/home/Home"
+import Monitoring from "./components/sections/monitoring/Monitoring";
+import Admin from "./components/sections/admin/Admin";
 
 export default function App() {
   return (
@@ -14,7 +16,8 @@ export default function App() {
 
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
-              {/* <Route path="monitoring" element={<Monitoring />} /> */}
+              <Route path="monitoring" element={<Monitoring />} />
+              <Route path="admin" element={<Admin />} />
             </Route>
 
             <Route path="*" element={<NotFound />} />
