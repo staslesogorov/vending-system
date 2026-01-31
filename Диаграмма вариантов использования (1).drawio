@@ -1,0 +1,61 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36" version="29.3.6">
+  <diagram name="Страница-1" id="UPCF1qHua9baohPj4Wo6">
+    <mxGraphModel grid="1" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="fQFm4tdtBh12xaz6G3ik-16" edge="1" parent="1" source="fQFm4tdtBh12xaz6G3ik-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="fQFm4tdtBh12xaz6G3ik-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="fQFm4tdtBh12xaz6G3ik-17" edge="1" parent="1" source="fQFm4tdtBh12xaz6G3ik-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="fQFm4tdtBh12xaz6G3ik-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="fQFm4tdtBh12xaz6G3ik-18" edge="1" parent="1" source="fQFm4tdtBh12xaz6G3ik-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="fQFm4tdtBh12xaz6G3ik-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="fQFm4tdtBh12xaz6G3ik-19" edge="1" parent="1" source="fQFm4tdtBh12xaz6G3ik-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="fQFm4tdtBh12xaz6G3ik-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="fQFm4tdtBh12xaz6G3ik-1" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" value="&lt;div&gt;Администратор&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="30" x="430" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="fQFm4tdtBh12xaz6G3ik-4" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="Авторизоваться" vertex="1">
+          <mxGeometry height="70" width="140" x="120" y="195" as="geometry" />
+        </mxCell>
+        <mxCell id="fQFm4tdtBh12xaz6G3ik-5" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="&lt;li data-start=&quot;1318&quot; data-end=&quot;1346&quot;&gt;&lt;p data-start=&quot;1320&quot; data-end=&quot;1346&quot;&gt;Просматривать состояние ТА&lt;/p&gt;&lt;/li&gt;" vertex="1">
+          <mxGeometry height="70" width="140" x="274" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="fQFm4tdtBh12xaz6G3ik-6" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="Управлять ТА" vertex="1">
+          <mxGeometry height="70" width="140" x="430" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="fQFm4tdtBh12xaz6G3ik-8" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="Просматривать уведомления" vertex="1">
+          <mxGeometry height="70" width="140" x="590" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="fQFm4tdtBh12xaz6G3ik-20" edge="1" parent="1" source="fQFm4tdtBh12xaz6G3ik-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="fQFm4tdtBh12xaz6G3ik-15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="fQFm4tdtBh12xaz6G3ik-14" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" value="Платежная система" vertex="1">
+          <mxGeometry height="60" width="30" x="60" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="fQFm4tdtBh12xaz6G3ik-15" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="Обрабатывать&lt;div&gt;платежы&lt;/div&gt;" vertex="1">
+          <mxGeometry height="70" width="140" x="5" y="420" as="geometry" />
+        </mxCell>
+        <mxCell id="fQFm4tdtBh12xaz6G3ik-23" edge="1" parent="1" source="fQFm4tdtBh12xaz6G3ik-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="fQFm4tdtBh12xaz6G3ik-22">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="fQFm4tdtBh12xaz6G3ik-25" edge="1" parent="1" source="fQFm4tdtBh12xaz6G3ik-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="fQFm4tdtBh12xaz6G3ik-24">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="fQFm4tdtBh12xaz6G3ik-21" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" value="Клиент" vertex="1">
+          <mxGeometry height="60" width="30" x="384" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="fQFm4tdtBh12xaz6G3ik-22" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="Купить товар" vertex="1">
+          <mxGeometry height="70" width="140" x="260" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="fQFm4tdtBh12xaz6G3ik-24" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="Оплатить покупку" vertex="1">
+          <mxGeometry height="70" width="140" x="414" y="410" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
