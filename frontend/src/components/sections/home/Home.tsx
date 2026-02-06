@@ -8,6 +8,7 @@ import InfoItem from "./InfoItem";
 
 export default function Home() {
     const [vendingMachines, setVendingMachines] = useState<IVendingMachines[]>([])
+    const [sales, setSales] = useState<IVendingMachines[]>([])
     const successMachines = vendingMachines.filter(m => m.status === "Работает")
     const brokenMachines = vendingMachines.filter(m => m.status === "Вышел из строя")
     const serviceMachines = vendingMachines.filter(m => m.status === "В ремонте/на обслуживании")
@@ -16,9 +17,18 @@ export default function Home() {
         const getMachines = async () => {
             const data = await fetch("http://localhost:5208/api/VendingMachines")
             const vendingMachines = await data.json()
+            console.log(vendingMachines)
             setVendingMachines(vendingMachines)
         }
 
+        const getSales = async () => {
+            const data = await fetch("http://localhost:5208/api/Sales")
+            const sales = await data.json()
+            console.log(sales)
+            setSales(sales)
+        }
+        
+        getSales();
         getMachines();
     }, [])
 

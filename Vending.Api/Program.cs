@@ -7,8 +7,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 builder.Services.AddControllers();
-builder.Services.AddSwaggerGen();
 builder.Services.AddCors();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.EnableAnnotations();
+});
 
 var app = builder.Build();
 var options = new JsonSerializerOptions

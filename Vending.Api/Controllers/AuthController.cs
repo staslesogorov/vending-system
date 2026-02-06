@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Swashbuckle.AspNetCore.Annotations;
 using Vending.Api.Data;
 using Vending.Api.Dto;
 
@@ -13,6 +14,12 @@ public class AuthController(AppDbContext context) : ControllerBase
     private readonly AppDbContext _context = context;
 
     [HttpPost]
+    [SwaggerOperation(
+        Summary = "Авторизация",
+        Description = "Проверяет логин и пароль и возвращает пользователя"
+    )]
+    [SwaggerResponse(StatusCodes.Status200OK, "Успешная авторизация", typeof(User))]
+    [SwaggerResponse(StatusCodes.Status404NotFound, "Пользователь не найден или неверный пароль")]
     public IActionResult Auth(Dto.LoginRequest request)
     {
         var user = _context
