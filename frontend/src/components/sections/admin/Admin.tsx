@@ -3,59 +3,12 @@ import Module2 from "../Module2";
 import TitleBar from "../TitleBar";
 import type IVendingMachines from "../../../interfaces/IVendingMachines";
 import { createColumnHelper, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable, type SortingState } from "@tanstack/react-table";
-import {  ArrowUpDown, ChevronLeft, ChevronRight, Plus } from "lucide-react";
+import {  ArrowUpDown, ChevronLeft, ChevronRight, Pen, Plus, Trash, Unlock } from "lucide-react";
 import ExportButton from "./ExportButton";
 
 const columnHelper = createColumnHelper<IVendingMachines>()
 
-const columns = [
-    columnHelper.accessor("id",{
-        cell: (info) => info.getValue(),
-        header: () => (
-            <span className="flex justify-center text-black font-bold">ID</span>
-        )
-    }),
-    columnHelper.accessor("model",{
-        cell: (info) => (
-            <span className="text-blue-400">{info.getValue()}</span>
-        ),
-        header: () => (
-            <span className="flex justify-center text-black font-bold">Название автомата</span>
-        )
-    }),
-    columnHelper.accessor("serialNumber",{
-        cell: (info) => info.getValue(),
-        header: () => (
-            <span className="flex justify-center text-black font-bold">Модель</span>
-        )
-    }),
-    columnHelper.accessor("manufacturer",{
-        cell: (info) => (
-            <span className="text-blue-400">{info.getValue()}</span>
-        ),
-        header: () => (
-            <span className="flex justify-center text-black font-bold">Компания</span>
-        )
-    }),
-    columnHelper.accessor("inventoryNumber",{
-        cell: (info) => info.getValue(),
-        header: () => (
-            <span className="flex justify-center text-black font-bold">Модем</span>
-        )
-    }),
-    columnHelper.accessor("location",{
-        cell: (info) => info.getValue(),
-        header: () => (
-            <span className="flex justify-center text-black font-bold">Адрес/Место</span>
-        )
-    }),
-    columnHelper.accessor("manufactureDate",{
-        cell: (info) => info.getValue(),
-        header: () => (
-            <span className="flex justify-center text-black font-bold">В работе с</span>
-        )
-    }),
-]
+
 
 export default function Admin() {
     const [vendingMachines, setVendingMachines] = useState<IVendingMachines[]>([])
@@ -63,8 +16,120 @@ export default function Admin() {
     const [sorting, setSorting] = useState<SortingState>([]);
     const [globalFilter, setGlobalFilter] = useState("");
 
+    const handleEdit = (item: IVendingMachines) => {
+    console.log("edit", item);
+    }
+
+    const handleDelete = (item: IVendingMachines) => {
+        const confirmed = window.confirm(
+            `Удалить автомат "${item.model}"?`
+        );
+
+        if (!confirmed) return;
+        const deleteMachine = async (id: string) => {
+            
+            await fetch(`http://localhost:5208/api/VendingMachines/${id}`,
+                {
+                    method: "DELETE",
+                }
+            );
+        }
+        deleteMachine(item.id);
+
+        setVendingMachines(prev =>
+            prev.filter(machine => machine.id !== item.id)
+        );
+    }
+
+    const handleUnlock = (item: IVendingMachines) => {
+    console.log("unlock", item);
+    }
+
+
     const data = useMemo(() => vendingMachines, [vendingMachines]);
     
+    const columns = useMemo(
+    () => [
+        columnHelper.accessor("id",{
+            cell: (info) => info.getValue(),
+            header: () => (
+                <span className="flex justify-center text-black font-bold">ID</span>
+            )
+        }),
+        columnHelper.accessor("model",{
+            cell: (info) => (
+                <span className="text-blue-400">{info.getValue()}</span>
+            ),
+            header: () => (
+                <span className="flex justify-center text-black font-bold">Название автомата</span>
+            )
+        }),
+        columnHelper.accessor("serialNumber",{
+            cell: (info) => info.getValue(),
+            header: () => (
+                <span className="flex justify-center text-black font-bold">Модель</span>
+            )
+        }),
+        columnHelper.accessor("manufacturer",{
+            cell: (info) => (
+                <span className="text-blue-400">{info.getValue()}</span>
+            ),
+            header: () => (
+                <span className="flex justify-center text-black font-bold">Компания</span>
+            )
+        }),
+        columnHelper.accessor("inventoryNumber",{
+            cell: (info) => info.getValue(),
+            header: () => (
+                <span className="flex justify-center text-black font-bold">Модем</span>
+            )
+        }),
+        columnHelper.accessor("location",{
+            cell: (info) => info.getValue(),
+            header: () => (
+                <span className="flex justify-center text-black font-bold">Адрес/Место</span>
+            )
+        }),
+        columnHelper.accessor("manufactureDate",{
+            cell: (info) => info.getValue(),
+            header: () => (
+                <span className="flex justify-center text-black font-bold">В работе с</span>
+            )
+        }),
+        columnHelper.display({
+            id: "actions",
+            header: () => (
+                <span className="flex justify-center text-black font-bold">
+                    Действия
+                </span>
+            ),
+            cell: ({ row }) => (
+                <div className="flex justify-center items-center">
+                    <button
+                        className="p-1 cursor-pointer"
+                        onClick={() => handleEdit(row.original)}
+                    >
+                        <Pen size={14} color="blue"/>
+                    </button>
+                    <button
+                        className="p-1 cursor-pointer"
+                        onClick={() => handleDelete(row.original)}
+                    >
+                        <Trash size={14} color="blue"/>
+                    </button>
+                    <button
+                        className="p-1 cursor-pointer"
+                        onClick={() =>handleUnlock(row.original)}
+                    >
+                        <Unlock size={14} color="blue"/>
+                    </button>
+                </div>
+                ),
+                enableSorting: true,
+                enableColumnFilter: true,
+        }),
+    ], [handleDelete]);
+
     const table = useReactTable<IVendingMachines>({
         data,
         columns,
@@ -86,13 +151,10 @@ export default function Admin() {
     });
 
     const pagination = table.getState().pagination;
-
     const pageIndex = pagination.pageIndex;
     const pageSize = pagination.pageSize;
-
     const totalRows = table.getFilteredRowModel().rows.length;
     const currentRows = table.getRowModel().rows.length;
-
     const from = totalRows === 0 ? 0 : pageIndex * pageSize + 1;
     const to = pageIndex * pageSize + currentRows;
 
@@ -105,6 +167,7 @@ export default function Admin() {
         }
         getMachines();
     }, [])
+    
     
     return(
         <section className="flex-1 flex flex-col">
@@ -166,12 +229,10 @@ export default function Admin() {
                                                     <th key={header.id} className="px-6 py-3 text-left text-xs font-medium text-gray-500 tracking-wider">
                                                         <div
                                                             {...{
-                                                                className: header.column.getCanSort()
-                                                                ? "cursor-pointer select-none flex items-center justify-center"
-                                                                : "",
+                                                                className: "cursor-pointer select-none flex items-center justify-center",
                                                                 onClick: header.column.getToggleSortingHandler(),
                                                             }}
-                                                            >
+                                                        >
                                                             {flexRender(
                                                                 header.column.columnDef.header,
                                                                 header.getContext()
