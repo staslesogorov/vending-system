@@ -1,4 +1,5 @@
 export default interface IVendingMachines {
+    id: string;
     location: string;
     model: string;
     type: string;

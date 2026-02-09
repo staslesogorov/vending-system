@@ -2,7 +2,7 @@ import {useState, useEffect, useRef} from 'react';
 import { useNavigate } from 'react-router-dom';
 import type IUser from '../../interfaces/IUser';
 import { Lock, Power, User } from "lucide-react"
-import DropdownButton from './DropdownButton';
+import DropdownButton from '../DropdownButton';
 
 export default function UserDropdown() {
     const [open, setOpen] = useState(false);

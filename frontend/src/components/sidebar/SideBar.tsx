@@ -14,7 +14,7 @@ export default function SideBar() {
         <span className={`transition-transform duration-200 ${isShort ? '-rotate-90' : 'rotate-90'}`}>▾</span>
       </div>
 
-        <div className={`bg-gray-900 h-screen pt-3 ${isShort ? 'w-16' : 'w-64'}`}>
+        <div className={`bg-gray-900 min-h-screen h-full pt-3 ${isShort ? 'w-16' : 'w-64'}`}>
             <div className="flex flex-col gap-7">
                 <SidebarItem
                     icon={<Search size={22} />}
