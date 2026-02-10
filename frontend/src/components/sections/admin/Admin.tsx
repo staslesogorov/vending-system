@@ -173,7 +173,7 @@ export default function Admin() {
         <section className="flex-1 flex flex-col">
             <TitleBar title="Администрирование / Торговые автоматы"/>
             <div className="">
-                <div className="mx-60">
+                <div className="mx-40">
                     <Module2
                         title={
                             <div className="flex flex-col bg-gray-50 p-4">
